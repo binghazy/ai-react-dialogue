@@ -1,8 +1,20 @@
+
 # Welcome to your Lovable project
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/a4c2b991-86d2-486e-aae1-5a653c607839
+
+## Setting up OpenAI API Key
+
+This project uses the OpenAI API to power the chat functionality. Follow these steps to set up your API key:
+
+1. Get an API key from [OpenAI's platform](https://platform.openai.com/api-keys)
+2. Create a `.env` file in the root directory (copy from `.env.example`)
+3. Add your API key to the `.env` file:
+   ```
+   VITE_OPENAI_API_KEY=your_api_key_here
+   ```
 
 ## How can I edit this code?
 
@@ -59,6 +71,7 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- OpenAI API
 
 ## How can I deploy this project?
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { User, Bot } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 type ChatMessageProps = {
   content: string;
@@ -39,7 +40,11 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
           {timestamp && <span className="text-xs text-gray-400 ml-2">{timestamp}</span>}
         </div>
         <div className="prose max-w-none">
-          {content}
+          {isUser ? (
+            content
+          ) : (
+            <ReactMarkdown>{content}</ReactMarkdown>
+          )}
         </div>
       </div>
     </div>

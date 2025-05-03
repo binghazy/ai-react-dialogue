@@ -7,6 +7,7 @@ import ChatHistory from './ChatHistory';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { createChatCompletion, ChatMessage as OpenAIMessage, defaultModel } from '@/services/openai';
 
 type Message = {
   id: string;
@@ -31,6 +32,9 @@ const generateId = (): string => {
   return Math.random().toString(36).substring(2, 9);
 };
 
+// Initial welcome message from the assistant
+const welcomeMessage = "Hello! I'm a ChatGPT assistant powered by OpenAI's GPT-4o. How can I help you today?";
+
 // Mock initial conversations
 const initialConversations: Conversation[] = [
   {
@@ -40,9 +44,9 @@ const initialConversations: Conversation[] = [
     messages: [
       {
         id: "msg-1",
-        content: "Hello! How can I help you today?",
+        content: welcomeMessage,
         isUser: false,
-        timestamp: "12:00 PM"
+        timestamp: formatTimestamp()
       }
     ]
   }
@@ -59,13 +63,13 @@ const ChatInterface = () => {
   const activeConversation = conversations.find(conv => conv.id === activeConversationId);
   const messages = activeConversation?.messages || [];
 
-  const handleSendMessage = (content: string) => {
+  const handleSendMessage = async (content: string) => {
     const timestamp = formatTimestamp();
     
+    // Add user message
     setConversations(prevConversations => {
       return prevConversations.map(conversation => {
         if (conversation.id === activeConversationId) {
-          // Add user message
           const updatedMessages = [
             ...conversation.messages,
             {
@@ -87,19 +91,44 @@ const ChatInterface = () => {
       });
     });
 
-    // Simulate AI response
-    setIsTyping(true);
-    setTimeout(() => {
-      const aiResponses = [
-        "I'm an AI assistant, and I'm here to help you with any questions or tasks you might have.",
-        "That's an interesting question. Let me think about how to best answer that for you.",
-        "I understand what you're asking. Here's what I can tell you about that topic.",
-        "Thanks for your message. I'm designed to provide information and assistance on a wide range of topics.",
-        "I appreciate your question. Let me provide you with a helpful response."
-      ];
+    // Generate API message format
+    try {
+      setIsTyping(true);
       
-      const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+      // Create the messages array for the API
+      const apiMessages: OpenAIMessage[] = [];
       
+      // Add system message
+      apiMessages.push({
+        role: "system",
+        content: "You are a helpful assistant. Respond in a concise and friendly manner."
+      });
+      
+      // Add conversation history (limited to last 10 messages to save tokens)
+      const historyMessages = activeConversation?.messages.slice(-10) || [];
+      historyMessages.forEach(msg => {
+        apiMessages.push({
+          role: msg.isUser ? "user" : "assistant",
+          content: msg.content
+        });
+      });
+      
+      // Add current message
+      apiMessages.push({
+        role: "user",
+        content: content
+      });
+      
+      // Call OpenAI API
+      const response = await createChatCompletion({
+        model: defaultModel,
+        messages: apiMessages
+      });
+      
+      // Extract the assistant's reply
+      const assistantReply = response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
+      
+      // Add assistant message to the conversation
       setConversations(prevConversations => {
         return prevConversations.map(conversation => {
           if (conversation.id === activeConversationId) {
@@ -109,7 +138,7 @@ const ChatInterface = () => {
                 ...conversation.messages,
                 {
                   id: generateId(),
-                  content: randomResponse,
+                  content: assistantReply,
                   isUser: false,
                   timestamp: formatTimestamp()
                 }
@@ -120,8 +149,16 @@ const ChatInterface = () => {
         });
       });
       
+    } catch (error) {
+      console.error("Error getting response:", error);
+      toast({
+        title: "Error",
+        description: "Failed to get a response from the assistant",
+        variant: "destructive",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const startNewConversation = () => {
@@ -132,7 +169,7 @@ const ChatInterface = () => {
       messages: [
         {
           id: generateId(),
-          content: "Hello! How can I help you today?",
+          content: welcomeMessage,
           isUser: false,
           timestamp: formatTimestamp()
         }
