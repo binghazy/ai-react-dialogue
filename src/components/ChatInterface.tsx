@@ -4,9 +4,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import ChatHistory from './ChatHistory';
-import ApiKeyInput from './ApiKeyInput';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { Menu, User, BarChart, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { createChatCompletion, ChatMessage as OpenAIMessage, defaultModel } from '@/services/openai';
 
@@ -58,16 +57,20 @@ const ChatInterface = () => {
   const [activeConversationId, setActiveConversationId] = useState<string>(initialConversations[0].id);
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [hasApiKey, setHasApiKey] = useState(false);
+  const [activeView, setActiveView] = useState<'chat' | 'metrics' | 'analysis'>('chat');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
   const activeConversation = conversations.find(conv => conv.id === activeConversationId);
   const messages = activeConversation?.messages || [];
 
-  // Handle API key being set
-  const handleApiKeySet = (apiKey: string) => {
-    setHasApiKey(true);
+  const handleLogin = () => {
+    setIsLoggedIn(!isLoggedIn);
+    toast({
+      title: isLoggedIn ? "Logged out" : "Logged in",
+      description: isLoggedIn ? "You have been logged out" : "You are now logged in as User"
+    });
   };
 
   const handleSendMessage = async (content: string) => {
@@ -186,6 +189,7 @@ const ChatInterface = () => {
     setConversations([newConversation, ...conversations]);
     setActiveConversationId(newConversation.id);
     setSidebarOpen(false); // Auto-close sidebar on mobile after selection
+    setActiveView('chat');
     
     toast({
       title: "New conversation started",
@@ -196,6 +200,70 @@ const ChatInterface = () => {
   const handleSelectConversation = (id: string) => {
     setActiveConversationId(id);
     setSidebarOpen(false); // Auto-close sidebar on mobile after selection
+    setActiveView('chat');
+  };
+
+  const renderMainContent = () => {
+    switch (activeView) {
+      case 'metrics':
+        return (
+          <div className="flex flex-col items-center justify-center h-full">
+            <BarChart size={64} className="text-purple-500 mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Chat Metrics</h2>
+            <p className="text-center text-gray-600 max-w-md">
+              Track your conversation statistics and usage patterns over time. This feature will show charts and data visualization of your chat activity.
+            </p>
+          </div>
+        );
+      case 'analysis':
+        return (
+          <div className="flex flex-col items-center justify-center h-full">
+            <Activity size={64} className="text-blue-500 mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Content Analysis</h2>
+            <p className="text-center text-gray-600 max-w-md">
+              Get insights about the content of your conversations, including sentiment analysis, topic detection, and key points extraction.
+            </p>
+          </div>
+        );
+      case 'chat':
+      default:
+        return (
+          <>
+            <div className="flex-1 overflow-y-auto">
+              {messages.map((message, index) => (
+                <ChatMessage 
+                  key={message.id}
+                  content={message.content}
+                  isUser={message.isUser}
+                  timestamp={message.timestamp}
+                  animationDelay={index * 100}
+                />
+              ))}
+              
+              {isTyping && (
+                <div className="py-6 px-4 md:px-8 flex items-center gap-4 bg-[hsl(var(--chat-ai-bg))]">
+                  <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                    <span className="text-purple-600 text-sm">AI</span>
+                  </div>
+                  <div className="typing-indicator font-medium text-sm">
+                    ChatGPT is thinking
+                  </div>
+                </div>
+              )}
+              
+              <div className="h-36"></div> {/* Spacer for better scrolling */}
+            </div>
+            
+            {/* Chat input */}
+            <div className="border-t p-2 bg-white">
+              <ChatInput 
+                onSendMessage={handleSendMessage}
+                disabled={isTyping}
+              />
+            </div>
+          </>
+        );
+    }
   };
 
   useEffect(() => {
@@ -217,9 +285,14 @@ const ChatInterface = () => {
         <div className="flex-1 text-center font-medium">
           {activeConversation?.title || "Chat"}
         </div>
-        <div className="w-9">
-          <ApiKeyInput onApiKeySet={handleApiKeySet} />
-        </div>
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={handleLogin} 
+          className="w-9 h-9"
+        >
+          <User size={16} />
+        </Button>
       </div>
       
       {/* Sidebar */}
@@ -228,57 +301,87 @@ const ChatInterface = () => {
         md:block w-full md:w-64 lg:w-80 
         ${isMobile ? 'absolute z-20 h-[calc(100%-3rem)] top-12' : 'h-full'}
       `}>
-        <ChatHistory 
-          conversations={conversations}
-          activeConversation={activeConversationId}
-          onSelectConversation={handleSelectConversation}
-          onNewConversation={startNewConversation}
-          isMobile={isMobile}
-          onClose={() => setSidebarOpen(false)}
-        />
-        
-        {/* API Key button (desktop) */}
-        {!isMobile && (
-          <div className="p-4 border-t">
-            <ApiKeyInput onApiKeySet={handleApiKeySet} />
+        <div className="h-full flex flex-col bg-[hsl(var(--chat-sidebar))] border-r border-[hsl(var(--chat-border))]">
+          <div className="p-4">
+            {/* Desktop login button */}
+            {!isMobile && (
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-start gap-2 mb-4"
+                onClick={handleLogin}
+              >
+                <User size={16} />
+                {isLoggedIn ? "User Profile" : "Login"}
+              </Button>
+            )}
+            
+            <Button 
+              variant="outline" 
+              className="w-full flex items-center justify-start gap-2 mb-4"
+              onClick={startNewConversation}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+              New chat
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className={`w-full flex items-center justify-start gap-2 mb-2 ${activeView === 'metrics' ? 'bg-gray-200' : ''}`}
+              onClick={() => setActiveView('metrics')}
+            >
+              <BarChart size={16} />
+              Metrics
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className={`w-full flex items-center justify-start gap-2 mb-4 ${activeView === 'analysis' ? 'bg-gray-200' : ''}`}
+              onClick={() => setActiveView('analysis')}
+            >
+              <Activity size={16} />
+              Analysis
+            </Button>
+            
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                className="md:hidden w-full mb-2"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Close
+              </Button>
+            )}
           </div>
-        )}
+
+          {/* Conversation history */}
+          <div className="flex-1 overflow-y-auto p-2">
+            {conversations.map((conversation) => (
+              <button
+                key={conversation.id}
+                onClick={() => handleSelectConversation(conversation.id)}
+                className={`w-full text-left p-3 rounded-md mb-1 flex items-center gap-2 text-sm transition-colors ${
+                  activeConversationId === conversation.id && activeView === 'chat'
+                    ? "bg-gray-200 dark:bg-gray-700"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <div className="flex-1 truncate">{conversation.title}</div>
+              </button>
+            ))}
+            
+            {conversations.length === 0 && (
+              <div className="text-center text-gray-500 mt-4 text-sm">
+                No conversations yet
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       
       {/* Main chat area */}
       <div className="flex-1 flex flex-col h-full md:h-screen">
-        <div className="flex-1 overflow-y-auto">
-          {messages.map((message, index) => (
-            <ChatMessage 
-              key={message.id}
-              content={message.content}
-              isUser={message.isUser}
-              timestamp={message.timestamp}
-              animationDelay={index * 100}
-            />
-          ))}
-          
-          {isTyping && (
-            <div className="py-6 px-4 md:px-8 flex items-center gap-4 bg-[hsl(var(--chat-ai-bg))]">
-              <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                <span className="text-purple-600 text-sm">AI</span>
-              </div>
-              <div className="typing-indicator font-medium text-sm">
-                ChatGPT is thinking
-              </div>
-            </div>
-          )}
-          
-          <div className="h-36"></div> {/* Spacer for better scrolling */}
-        </div>
-        
-        {/* Chat input */}
-        <div className="border-t p-2 bg-white">
-          <ChatInput 
-            onSendMessage={handleSendMessage}
-            disabled={isTyping || !hasApiKey}
-          />
-        </div>
+        {renderMainContent()}
       </div>
     </div>
   );
