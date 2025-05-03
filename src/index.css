@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,6 +50,13 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* ChatGPT-inspired colors */
+    --chat-ai-bg: 260 30% 96%;
+    --chat-user-bg: 260 60% 98%;
+    --chat-sidebar: 0 0% 98%;
+    --chat-accent: 260 85% 65%;
+    --chat-border: 260 10% 90%;
   }
 
   .dark {
@@ -87,6 +95,13 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* ChatGPT-inspired colors - dark mode */
+    --chat-ai-bg: 240 10% 15%;
+    --chat-user-bg: 260 20% 20%;
+    --chat-sidebar: 240 10% 10%;
+    --chat-accent: 260 70% 60%;
+    --chat-border: 240 10% 20%;
   }
 }
 
@@ -98,4 +113,28 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.message-appear {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: appear 0.3s forwards;
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.typing-indicator::after {
+  content: '';
+  animation: typing 1.5s infinite;
+}
+
+@keyframes typing {
+  0% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
 }
