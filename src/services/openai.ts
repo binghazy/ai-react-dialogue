@@ -17,12 +17,13 @@ export type ChatCompletionOptions = {
 export const defaultModel = "gpt-4o";
 
 export async function createChatCompletion(options: ChatCompletionOptions) {
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  // Get API key from localStorage instead of environment variable
+  const apiKey = localStorage.getItem('openai_api_key');
   
   if (!apiKey) {
     toast({
       title: "API Key Missing",
-      description: "Please set your OpenAI API key in the .env file",
+      description: "Please set your OpenAI API key to use the chat",
       variant: "destructive",
     });
     throw new Error("OpenAI API key is not set");

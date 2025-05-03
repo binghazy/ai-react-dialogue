@@ -4,6 +4,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import ChatHistory from './ChatHistory';
+import ApiKeyInput from './ApiKeyInput';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -57,11 +58,17 @@ const ChatInterface = () => {
   const [activeConversationId, setActiveConversationId] = useState<string>(initialConversations[0].id);
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
   const activeConversation = conversations.find(conv => conv.id === activeConversationId);
   const messages = activeConversation?.messages || [];
+
+  // Handle API key being set
+  const handleApiKeySet = (apiKey: string) => {
+    setHasApiKey(true);
+  };
 
   const handleSendMessage = async (content: string) => {
     const timestamp = formatTimestamp();
@@ -210,7 +217,9 @@ const ChatInterface = () => {
         <div className="flex-1 text-center font-medium">
           {activeConversation?.title || "Chat"}
         </div>
-        <div className="w-9"></div> {/* Spacer for alignment */}
+        <div className="w-9">
+          <ApiKeyInput onApiKeySet={handleApiKeySet} />
+        </div>
       </div>
       
       {/* Sidebar */}
@@ -227,6 +236,13 @@ const ChatInterface = () => {
           isMobile={isMobile}
           onClose={() => setSidebarOpen(false)}
         />
+        
+        {/* API Key button (desktop) */}
+        {!isMobile && (
+          <div className="p-4 border-t">
+            <ApiKeyInput onApiKeySet={handleApiKeySet} />
+          </div>
+        )}
       </div>
       
       {/* Main chat area */}
@@ -260,7 +276,7 @@ const ChatInterface = () => {
         <div className="border-t p-2 bg-white">
           <ChatInput 
             onSendMessage={handleSendMessage}
-            disabled={isTyping}
+            disabled={isTyping || !hasApiKey}
           />
         </div>
       </div>
