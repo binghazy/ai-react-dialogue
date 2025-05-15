@@ -24,19 +24,19 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
       <div className="flex-shrink-0">
         <Avatar className={cn(
           "h-8 w-8 flex items-center justify-center",
-          isUser ? "bg-blue-100" : "bg-purple-100"
+          isUser ? "bg-blue-100" : "bg-streamlit-primary/20"
         )}>
           {isUser ? (
             <User size={18} className="text-blue-600" />
           ) : (
-            <Bot size={18} className="text-purple-600" />
+            <Bot size={18} className="text-streamlit-primary" />
           )}
         </Avatar>
       </div>
 
       <div className="flex flex-col w-full">
         <div className="text-sm font-medium mb-1">
-          {isUser ? 'You' : 'ChatGPT'}
+          {isUser ? 'You' : 'Tamer Elgayar'}
           {timestamp && <span className="text-xs text-gray-400 ml-2">{timestamp}</span>}
         </div>
         <div className="prose max-w-none">

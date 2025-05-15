@@ -33,7 +33,7 @@ const generateId = (): string => {
 };
 
 // Initial welcome message from the assistant
-const welcomeMessage = "Hello! I'm a ChatGPT assistant powered by OpenAI's GPT-4o. How can I help you today?";
+const welcomeMessage = "Hello! I'm Tamer Elgayar, your AI assistant. How can I help you today?";
 
 // Mock initial conversations
 const initialConversations: Conversation[] = [
@@ -208,7 +208,7 @@ const ChatInterface = () => {
       case 'metrics':
         return (
           <div className="flex flex-col items-center justify-center h-full">
-            <BarChart size={64} className="text-purple-500 mb-4" />
+            <BarChart size={64} className="text-streamlit-primary mb-4" />
             <h2 className="text-2xl font-bold mb-2">Chat Metrics</h2>
             <p className="text-center text-gray-600 max-w-md">
               Track your conversation statistics and usage patterns over time. This feature will show charts and data visualization of your chat activity.
@@ -218,7 +218,7 @@ const ChatInterface = () => {
       case 'analysis':
         return (
           <div className="flex flex-col items-center justify-center h-full">
-            <Activity size={64} className="text-blue-500 mb-4" />
+            <Activity size={64} className="text-streamlit-secondary mb-4" />
             <h2 className="text-2xl font-bold mb-2">Content Analysis</h2>
             <p className="text-center text-gray-600 max-w-md">
               Get insights about the content of your conversations, including sentiment analysis, topic detection, and key points extraction.
@@ -242,11 +242,11 @@ const ChatInterface = () => {
               
               {isTyping && (
                 <div className="py-6 px-4 md:px-8 flex items-center gap-4 bg-[hsl(var(--chat-ai-bg))]">
-                  <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                    <span className="text-purple-600 text-sm">AI</span>
+                  <div className="h-8 w-8 rounded-full bg-streamlit-primary/20 flex items-center justify-center">
+                    <span className="text-streamlit-primary text-sm">AI</span>
                   </div>
                   <div className="typing-indicator font-medium text-sm">
-                    ChatGPT is thinking
+                    Tamer Elgayar is thinking
                   </div>
                 </div>
               )}
@@ -283,7 +283,7 @@ const ChatInterface = () => {
           <Menu size={20} />
         </Button>
         <div className="flex-1 text-center font-medium">
-          {activeConversation?.title || "Chat"}
+          {activeConversation?.title || "Gayar"}
         </div>
         <Button 
           variant="outline" 

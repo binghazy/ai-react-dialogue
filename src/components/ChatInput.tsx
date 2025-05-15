@@ -44,7 +44,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
       onSubmit={handleSubmit} 
       className="w-full max-w-4xl mx-auto p-4 flex gap-2 items-end"
     >
-      <div className="relative w-full bg-white border border-gray-300 rounded-md focus-within:border-[hsl(var(--chat-accent))] focus-within:ring-1 focus-within:ring-[hsl(var(--chat-accent))]">
+      <div className="relative w-full bg-white border border-gray-300 rounded-md focus-within:border-streamlit-primary focus-within:ring-1 focus-within:ring-streamlit-primary">
         <textarea
           ref={textareaRef}
           value={message}
@@ -60,7 +60,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
       <Button 
         type="submit" 
         disabled={!message.trim() || disabled}
-        className="bg-[hsl(var(--chat-accent))] hover:bg-[hsl(var(--chat-accent))/90] h-10 w-10 p-2 rounded-md"
+        className="bg-streamlit-primary hover:bg-streamlit-primary/90 h-10 w-10 p-2 rounded-md"
         aria-label="Send message"
       >
         <Send className="h-5 w-5" />

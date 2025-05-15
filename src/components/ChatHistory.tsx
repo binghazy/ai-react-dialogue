@@ -37,20 +37,22 @@ const ChatHistory = ({
   return (
     <div className="h-full flex flex-col bg-[hsl(var(--chat-sidebar))] border-r border-[hsl(var(--chat-border))]">
       <div className="p-4">
+        <div className="text-xl font-bold mb-6 text-center text-streamlit-primary">Gayar</div>
+        
         {!isMobile && onLogin && (
           <Button 
             variant="outline" 
-            className="w-full flex items-center justify-start gap-2 mb-4"
+            className="w-full flex items-center justify-start gap-2 mb-4 border-streamlit-primary/30 hover:bg-streamlit-primary/10"
             onClick={onLogin}
           >
-            <User size={16} />
+            <User size={16} className="text-streamlit-primary" />
             {isLoggedIn ? "User Profile" : "Login"}
           </Button>
         )}
 
         <Button 
           variant="outline" 
-          className="w-full flex items-center justify-start gap-2 mb-4"
+          className="w-full flex items-center justify-start gap-2 mb-4 bg-streamlit-primary text-white hover:bg-streamlit-primary/90"
           onClick={onNewConversation}
         >
           <Plus size={16} />
@@ -61,19 +63,19 @@ const ChatHistory = ({
           <>
             <Button 
               variant="ghost" 
-              className={`w-full flex items-center justify-start gap-2 mb-2 ${activeView === 'metrics' ? 'bg-gray-200' : ''}`}
+              className={`w-full flex items-center justify-start gap-2 mb-2 ${activeView === 'metrics' ? 'bg-streamlit-primary/10 text-streamlit-primary' : ''}`}
               onClick={() => onViewChange('metrics')}
             >
-              <BarChart size={16} />
+              <BarChart size={16} className={activeView === 'metrics' ? 'text-streamlit-primary' : ''} />
               Metrics
             </Button>
             
             <Button 
               variant="ghost" 
-              className={`w-full flex items-center justify-start gap-2 mb-4 ${activeView === 'analysis' ? 'bg-gray-200' : ''}`}
+              className={`w-full flex items-center justify-start gap-2 mb-4 ${activeView === 'analysis' ? 'bg-streamlit-primary/10 text-streamlit-primary' : ''}`}
               onClick={() => onViewChange('analysis')}
             >
-              <Activity size={16} />
+              <Activity size={16} className={activeView === 'analysis' ? 'text-streamlit-primary' : ''} />
               Analysis
             </Button>
           </>
@@ -97,11 +99,11 @@ const ChatHistory = ({
             onClick={() => onSelectConversation(conversation.id)}
             className={`w-full text-left p-3 rounded-md mb-1 flex items-center gap-2 text-sm transition-colors ${
               activeConversation === conversation.id && activeView === 'chat'
-                ? "bg-gray-200 dark:bg-gray-700"
+                ? "bg-streamlit-primary/10 text-streamlit-primary"
                 : "hover:bg-gray-100 dark:hover:bg-gray-800"
             }`}
           >
-            <MessageSquare size={16} />
+            <MessageSquare size={16} className={activeConversation === conversation.id && activeView === 'chat' ? "text-streamlit-primary" : ""} />
             <div className="flex-1 truncate">{conversation.title}</div>
           </button>
         ))}
