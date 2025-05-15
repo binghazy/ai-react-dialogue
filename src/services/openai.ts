@@ -22,8 +22,9 @@ export async function createChatCompletion(options: ChatCompletionOptions) {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Generate a simple response based on the last user message
-    const lastUserMessage = options.messages.findLast(m => m.role === "user")?.content || "";
+    // Find the last user message using filter and array index instead of findLast
+    const userMessages = options.messages.filter(m => m.role === "user");
+    const lastUserMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1].content : "";
     
     let response = "";
     if (lastUserMessage.toLowerCase().includes("hello") || lastUserMessage.toLowerCase().includes("hi")) {
