@@ -43,7 +43,9 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
           {isUser ? (
             <span className="text-white">{content}</span>
           ) : (
-            <ReactMarkdown className="text-gray-200">{content}</ReactMarkdown>
+            <div className="text-gray-200">
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </div>
           )}
         </div>
       </div>
