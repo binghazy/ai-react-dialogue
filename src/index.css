@@ -58,6 +58,13 @@
     --streamlit-tertiary: 281 56% 50%;
     --streamlit-dark: 223 19% 8%;
     --streamlit-light: 260 100% 95%;
+
+    /* Dark theme - Matching the provided image */
+    --app-dark: 220 14% 13%;
+    --app-dark-lighter: 220 13% 18%;
+    --app-accent: 220 9% 46%;
+    --app-text: 0 0% 98%;
+    --app-error: 0 70% 50%;
   }
 
   .dark {
@@ -120,8 +127,16 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#1A1F2C] text-foreground;
   }
+}
+
+.bg-app-dark {
+  background-color: #1A1F2C;
+}
+
+.bg-app-dark-lighter {
+  background-color: #262B38;
 }
 
 .message-appear {

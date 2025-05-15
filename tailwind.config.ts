@@ -70,6 +70,12 @@ export default {
 					tertiary: 'hsl(var(--streamlit-tertiary))',
 					dark: 'hsl(var(--streamlit-dark))',
 					light: 'hsl(var(--streamlit-light))',
+				},
+				app: {
+					dark: '#1A1F2C',
+					'dark-lighter': '#262B38',
+					accent: '#828997',
+					error: '#E53935',
 				}
 			},
 			borderRadius: {

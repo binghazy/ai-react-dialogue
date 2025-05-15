@@ -42,9 +42,9 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
   return (
     <form 
       onSubmit={handleSubmit} 
-      className="w-full max-w-4xl mx-auto p-4 flex gap-2 items-end"
+      className="w-full max-w-4xl mx-auto p-4 flex gap-2 items-end bg-[#262B38]"
     >
-      <div className="relative w-full bg-white border border-gray-300 rounded-md focus-within:border-streamlit-primary focus-within:ring-1 focus-within:ring-streamlit-primary">
+      <div className="relative w-full bg-[#1A1F2C] border border-gray-700 rounded-md focus-within:border-streamlit-primary focus-within:ring-1 focus-within:ring-streamlit-primary">
         <textarea
           ref={textareaRef}
           value={message}
@@ -53,7 +53,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
           placeholder="Send a message..."
           disabled={disabled}
           rows={1}
-          className="w-full resize-none px-3 py-2.5 focus:outline-none bg-transparent text-sm"
+          className="w-full resize-none px-3 py-2.5 focus:outline-none bg-transparent text-white text-sm"
           style={{ maxHeight: '150px' }}
         />
       </div>

@@ -17,7 +17,7 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
     <div
       className={cn(
         "py-6 px-4 md:px-8 flex w-full items-start gap-4 message-appear",
-        isUser ? "bg-white" : "bg-[hsl(var(--chat-ai-bg))]"
+        isUser ? "bg-[#262B38]" : "bg-[#1A1F2C]"
       )}
       style={{ animationDelay: `${animationDelay}ms` }}
     >
@@ -35,15 +35,15 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
       </div>
 
       <div className="flex flex-col w-full">
-        <div className="text-sm font-medium mb-1">
+        <div className="text-sm font-medium mb-1 text-gray-300">
           {isUser ? 'You' : 'Tamer Elgayar'}
-          {timestamp && <span className="text-xs text-gray-400 ml-2">{timestamp}</span>}
+          {timestamp && <span className="text-xs text-gray-500 ml-2">{timestamp}</span>}
         </div>
-        <div className="prose max-w-none">
+        <div className="prose max-w-none prose-invert">
           {isUser ? (
-            content
+            <span className="text-white">{content}</span>
           ) : (
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdown className="text-gray-200">{content}</ReactMarkdown>
           )}
         </div>
       </div>
