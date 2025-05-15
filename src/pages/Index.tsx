@@ -4,7 +4,7 @@ import ChatInterface from '@/components/ChatInterface';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-[#1A1F2C]">
+    <div className="min-h-screen bg-[#0e1117]">
       <ChatInterface />
     </div>
   );

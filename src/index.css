@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -53,14 +52,14 @@
     
     /* Streamlit palette */
     --streamlit-neutral: 220 9% 56%;
-    --streamlit-primary: 259 94% 51%;
+    --streamlit-primary: 262 83% 58%;
     --streamlit-secondary: 273 68% 59%;
     --streamlit-tertiary: 281 56% 50%;
     --streamlit-dark: 223 19% 8%;
     --streamlit-light: 260 100% 95%;
 
     /* Dark theme - Matching the provided image */
-    --app-dark: 220 14% 13%;
+    --app-dark: 222 47% 7%;
     --app-dark-lighter: 220 13% 18%;
     --app-accent: 220 9% 46%;
     --app-text: 0 0% 98%;
@@ -96,7 +95,7 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --sidebar-background: 223 19% 8%;
-    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-foreground: 240 3.7% 15.9%;
     --sidebar-primary: 259 94% 51%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
@@ -132,7 +131,7 @@
 }
 
 .bg-app-dark {
-  background-color: #1A1F2C;
+  background-color: #0e1117;
 }
 
 .bg-app-dark-lighter {

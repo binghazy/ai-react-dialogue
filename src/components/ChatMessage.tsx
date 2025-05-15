@@ -17,7 +17,7 @@ const ChatMessage = ({ content, isUser, timestamp, animationDelay = 0 }: ChatMes
     <div
       className={cn(
         "py-6 px-4 md:px-8 flex w-full items-start gap-4 message-appear",
-        isUser ? "bg-[#262B38]" : "bg-[#1A1F2C]"
+        isUser ? "bg-[#262B38]" : "bg-[#0e1117]"
       )}
       style={{ animationDelay: `${animationDelay}ms` }}
     >

@@ -44,7 +44,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
       onSubmit={handleSubmit} 
       className="w-full max-w-4xl mx-auto p-4 flex gap-2 items-end bg-[#262B38]"
     >
-      <div className="relative w-full bg-[#1A1F2C] border border-gray-700 rounded-md focus-within:border-streamlit-primary focus-within:ring-1 focus-within:ring-streamlit-primary">
+      <div className="relative w-full bg-[#0e1117] border border-gray-700 rounded-md focus-within:border-streamlit-primary focus-within:ring-1 focus-within:ring-streamlit-primary">
         <textarea
           ref={textareaRef}
           value={message}

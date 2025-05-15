@@ -1,13 +1,23 @@
-
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import ChatHistory from './ChatHistory';
 import { Button } from '@/components/ui/button';
 import { Menu, User, BarChart, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { createChatCompletion, ChatMessage as OpenAIMessage, defaultModel } from '@/services/openai';
+
+// Import fitness icon
+const FitnessIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m6.5 6.5 11 11"></path>
+    <path d="M21 10c0 4.4-3.6 8-8 8"></path>
+    <path d="M11 4c2.2 0 4 1.8 4 4"></path>
+    <path d="M11 4c0 2.2-1.8 4-4 4"></path>
+    <path d="M11 12c0 2.2-1.8 4-4 4"></path>
+    <path d="M3 3v18h18"></path>
+  </svg>
+);
 
 type Message = {
   id: string;
@@ -273,8 +283,8 @@ const ChatInterface = () => {
 
   return (
     <div className="h-screen flex flex-col md:flex-row">
-      {/* Mobile sidebar toggle with app title */}
-      <div className="md:hidden border-b flex items-center p-2 bg-app-dark">
+      {/* Mobile sidebar toggle with app name in header */}
+      <div className="md:hidden border-b flex items-center p-2 bg-[#0e1117]">
         <Button 
           variant="ghost" 
           size="icon" 
@@ -287,10 +297,10 @@ const ChatInterface = () => {
           {activeConversation?.title || "Gayar"}
         </div>
         <Button 
-          variant="outline" 
+          variant="ghost" 
           size="icon" 
           onClick={handleLogin} 
-          className="w-9 h-9"
+          className="text-gray-400 hover:text-white hover:bg-gray-800"
         >
           <User size={16} />
         </Button>
@@ -302,9 +312,10 @@ const ChatInterface = () => {
         md:block w-full md:w-64 lg:w-80 
         ${isMobile ? 'absolute z-20 h-[calc(100%-3rem)] top-12' : 'h-full'}
       `}>
-        <div className="h-full flex flex-col bg-app-dark border-r border-gray-800">
-          {/* App title for desktop */}
-          <div className="hidden md:flex items-center justify-center p-4 border-b border-gray-800">
+        <div className="h-full flex flex-col bg-[#0e1117] border-r border-gray-800">
+          {/* App title for sidebar with fitness icon */}
+          <div className="flex items-center justify-center p-4 border-b border-gray-800">
+            <FitnessIcon className="text-streamlit-primary mr-2" />
             <h1 className="text-2xl font-bold text-white">GAYAR FIT</h1>
           </div>
           
@@ -313,7 +324,7 @@ const ChatInterface = () => {
             {!isMobile && (
               <Button 
                 variant="outline" 
-                className="w-full flex items-center justify-start gap-2 mb-4 border-gray-700 text-gray-300 hover:bg-gray-800"
+                className="w-full flex items-center justify-start gap-2 mb-4 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
                 onClick={handleLogin}
               >
                 <User size={16} />
@@ -387,10 +398,8 @@ const ChatInterface = () => {
       
       {/* Main chat area */}
       <div className="flex-1 flex flex-col h-full md:h-screen">
-        {/* App title for desktop in main area */}
-        <div className="md:flex hidden items-center p-3 border-b border-gray-800 bg-app-dark">
-          <h1 className="text-2xl font-bold text-white">GAYAR FIT</h1>
-        </div>
+        {/* Remove app title from main area, only keep in sidebar */}
+        <div className="md:flex hidden items-center p-3 border-b border-gray-800 bg-[#0e1117]"></div>
         {renderMainContent()}
       </div>
     </div>
