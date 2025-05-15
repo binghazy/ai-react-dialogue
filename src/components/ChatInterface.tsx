@@ -265,7 +265,7 @@ const ChatInterface = () => {
             </div>
             
             {/* Chat input */}
-            <div className="border-t p-2 bg-white">
+            <div className="border-t p-2 bg-[#0e1117]">
               <ChatInput 
                 onSendMessage={handleSendMessage}
                 disabled={isTyping}
